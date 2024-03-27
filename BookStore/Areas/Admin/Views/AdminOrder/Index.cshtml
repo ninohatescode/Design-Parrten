@@ -1,0 +1,84 @@
+﻿@model IEnumerable<BookStore.Models.Order>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Layout.cshtml";
+    var formatMoney = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+
+}
+
+<style>
+    /* Tùy chỉnh kiểu hiển thị của ô số thứ tự */
+    .index-cell {
+        width: 20px; /* Đặt kích thước cho ô số thứ tự */
+        text-align: center; /* Canh giữa nội dung của ô */
+        vertical-align: middle; /* Canh giữa theo chiều dọc */
+    }
+</style>
+
+<table class="table">
+    <tr>
+        <th>
+            STT
+        </th>
+        <th>
+            Tên khách hàng
+        </th>
+        <th>
+            Địa chỉ
+        </th>
+
+        <th>
+            Ngày đặt
+        </th>
+
+
+        <th>
+            Trạng thái
+        </th>
+
+
+        <th></th>
+    </tr>
+    @{ int count = 1; }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="index-cell">
+                #@count
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+
+            <td>
+                @String.Format("{0:dd/MM/yyyy}", item.DateOrder)
+            </td>
+
+
+            @if (item.StatusOrder == 0)
+            {
+                <td style="color:red;">Chưa xác nhận</td>
+            }
+            else if (item.StatusOrder == 2)
+            {
+                <td style="color:forestgreen;">Đã xác nhận</td>
+            }
+            else
+            {
+                <td style="color:orange;">Đã huỷ</td>
+            }
+
+            <td>
+                <a href="@Url.Action("Details/" + item.IdOrder)">Xem chi tiết</a>
+
+            </td>
+        </tr>
+
+        count++;
+    }
+
+</table>
